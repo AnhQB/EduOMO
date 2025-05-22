@@ -1,4 +1,5 @@
 using EduOMO.Data.Base;
+using EduOMO.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduOMO
@@ -13,6 +14,7 @@ namespace EduOMO
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<EduOMOContext>(
                 o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IPostService, PostService>();
 
             var app = builder.Build();
 

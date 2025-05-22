@@ -1,0 +1,11 @@
+﻿namespace EduOMO.Data;
+
+public abstract class CommonDto
+{
+    public string? Slug { get; set; }
+    public string? CreatedBy { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public string? UpdatedBy { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
+    public bool IsDeleted { get; set; }
+}

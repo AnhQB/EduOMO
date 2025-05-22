@@ -1,83 +1,58 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EduOMO.Data.Base;
+using EduOMO.Models;
+using EduOMO.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace EduOMO.Controllers
 {
+    [Route("Post")]
     public class PostController : Controller
     {
-        // GET: PostController
-        public ActionResult Index()
+        private readonly IPostService _postService;
+
+        public PostController(IPostService postService)
         {
-            return View();
+            this._postService = postService;
+        }
+        // GET: PostController
+        [HttpGet("")]
+        public async Task<ActionResult> Index()
+        {
+            var posts = await _postService.GetAllPosts();
+            var result = posts.Select(x => new PostViewModel
+            {
+                Slug = x.Slug,
+                Title = x.Title,
+                Content = x.Content,
+                Keyword = x.Keyword,
+                Document = x.Document,
+                CreatedBy = x.CreatedBy,
+                CreatedAt = x.CreatedAt,
+                UpdatedBy = x.UpdatedBy,
+                UpdatedAt = x.UpdatedAt
+            });
+            return View(result);
         }
 
         // GET: PostController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet("Details/{slug}")]
+        public async Task<ActionResult> Details(string slug)
         {
-            return View();
-        }
-
-        // GET: PostController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PostController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            var post = await _postService.GetPostBySlug(slug);
+            var result = new PostViewModel
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PostController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: PostController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PostController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PostController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                Slug = post.Slug,
+                Title = post.Title,
+                Content = post.Content,
+                Keyword = post.Keyword,
+                CreatedBy = post.CreatedBy,
+                CreatedAt = post.CreatedAt,
+                UpdatedBy = post.UpdatedBy,
+                UpdatedAt = post.UpdatedAt
+            };
+            return View(result);
         }
     }
 }
