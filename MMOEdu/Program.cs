@@ -1,3 +1,6 @@
+using EduOMO.Data.Base;
+using Microsoft.EntityFrameworkCore;
+
 namespace MMOEdu
 {
     public class Program
@@ -8,6 +11,8 @@ namespace MMOEdu
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<EduOMOContext>(
+                o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
