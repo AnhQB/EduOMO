@@ -20,3 +20,10 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/*[class*="items-"]{
+
+}*/
+.items{
+    padding: 50px 0;
+}

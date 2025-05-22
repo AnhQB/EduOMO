@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MMOEdu.Data\EduOMO.Data.csproj" />
+    <ProjectReference Include="..\EduOMO.Data\EduOMO.Data.csproj" />
   </ItemGroup>
 
 </Project>

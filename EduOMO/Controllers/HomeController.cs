@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MMOEdu.Models;
+using EduOMO.Models;
 
-namespace MMOEdu.Controllers
+namespace EduOMO.Controllers
 {
     public class HomeController : Controller
     {

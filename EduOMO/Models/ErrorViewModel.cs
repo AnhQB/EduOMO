@@ -1,4 +1,4 @@
-namespace MMOEdu.Models
+namespace EduOMO.Models
 {
     public class ErrorViewModel
     {

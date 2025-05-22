@@ -1,7 +1,7 @@
 using EduOMO.Data.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace MMOEdu
+namespace EduOMO
 {
     public class Program
     {
