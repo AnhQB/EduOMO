@@ -10,17 +10,17 @@ namespace EduOMO.Controllers
     [Route("Post")]
     public class PostController : Controller
     {
-        private readonly IPostService _postService;
+        private readonly IPostService _service;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService service)
         {
-            this._postService = postService;
+            this._service = service;
         }
         // GET: PostController
         [HttpGet("")]
         public async Task<ActionResult> Index()
         {
-            var posts = await _postService.GetAllPosts();
+            var posts = await _service.GetAllPosts();
             var result = posts.Select(x => new PostViewModel
             {
                 Slug = x.Slug,
@@ -40,7 +40,7 @@ namespace EduOMO.Controllers
         [HttpGet("Details/{slug}")]
         public async Task<ActionResult> Details(string slug)
         {
-            var post = await _postService.GetPostBySlug(slug);
+            var post = await _service.GetPostBySlug(slug);
             var result = new PostViewModel
             {
                 Slug = post.Slug,

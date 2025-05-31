@@ -1,6 +1,8 @@
 ﻿using EduOMO.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MMOEdu.Data;
 
 namespace EduOMO.Controllers
 {
@@ -23,7 +25,7 @@ namespace EduOMO.Controllers
         [HttpGet("Create")]
         public ActionResult Create()
         {
-            return View();
+            return View(new PostEntity());
         }
 
         // POST: PostManagementController/Create
@@ -42,18 +44,37 @@ namespace EduOMO.Controllers
         }
 
         // GET: PostManagementController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Edit(Guid id)
         {
-            return View();
+            var post = await _postService.GetPostById(id);
+            return View(post);
         }
 
         // POST: PostManagementController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(PostEntity request)
         {
             try
             {
+                var post = await _postService.GetPostById(request.Id); // or _context.Set<PostEntity>()
+
+                if (post == null)
+                {
+                    return NotFound();
+                }
+
+                post.Title = request.Title;
+                post.Content = request.Content;
+                post.Keyword = request.Keyword;
+                post.Document = request.Document;
+
+                // Optionally update audit fields
+                post.UpdatedAt = DateTimeOffset.UtcNow;
+                post.UpdatedBy = User.Identity?.Name;
+
+                await _postService.UpdatePost(post);
                 return RedirectToAction(nameof(Index));
             }
             catch

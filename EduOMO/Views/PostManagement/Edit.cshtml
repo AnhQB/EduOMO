@@ -1,7 +1,7 @@
 ﻿@model MMOEdu.Data.PostEntity
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
 @section CssCustom {
@@ -12,36 +12,37 @@
     </style>
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>PostEntity</h4>
 <hr />
 <div class="row">
     <div class="col-12">
-        <form asp-action="Create">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" asp-value="@Model.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <input asp-for="Title" class="form-control" asp-value="@Model.Title" />
+                <span asp-validation-for="Title" class="text-danger" ></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea id="editor" name="Content" class="form-control" rows="50"></textarea>
+                <textarea id="editor" name="Content" class="form-control" rows="50">@Model.Content</textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Keyword" class="control-label"></label>
-                <input asp-for="Keyword" class="form-control" />
+                <input asp-for="Keyword" class="form-control" asp-value="@Model.Keyword" />
                 <span asp-validation-for="Keyword" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Document" class="control-label"></label>
-                <input asp-for="Document" class="form-control" />
+                <input asp-for="Document" class="form-control" asp-value="@Model.Document" />
                 <span asp-validation-for="Document" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Update" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -52,7 +53,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     @* <script src="~/lib/ckeditor5/ckeditor.js" asp-append-version="true"></script> *@
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>

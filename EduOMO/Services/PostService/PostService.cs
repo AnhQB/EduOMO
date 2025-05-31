@@ -14,7 +14,12 @@ public class PostService : IPostService
     }
     public async Task<IEnumerable<PostEntity>> GetAllPosts()
     {
-        return await _context.Post.Where(x => !x.IsDeleted).ToListAsync();
+        return await _context.Post.AsNoTracking().Where(x => !x.IsDeleted).ToListAsync();
+    }
+
+    public async Task<IEnumerable<PostEntity>> GetFirst10Posts()
+    {
+        return await _context.Post.AsNoTracking().Where(x => !x.IsDeleted).OrderByDescending(x => x.CreatedAt).Take(10).ToListAsync();
     }
 
     public async Task<PostEntity> GetPostById(Guid id)
