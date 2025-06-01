@@ -6,7 +6,6 @@ using MMOEdu.Data;
 
 namespace EduOMO.Controllers
 {
-    [Route("PostManagement")]
     public class PostManagementController : Controller
     {
         private readonly IPostService _postService;
@@ -15,14 +14,12 @@ namespace EduOMO.Controllers
         {
             this._postService = postService;
         }
-        [HttpGet("")]
         public async Task<ActionResult> Index()
         {
             var posts = await _postService.GetAllPosts();
             return View(posts);
         }
 
-        [HttpGet("Create")]
         public ActionResult Create()
         {
             return View(new PostEntity());
@@ -31,10 +28,11 @@ namespace EduOMO.Controllers
         // POST: PostManagementController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(IFormCollection collection)
+        public async Task<ActionResult> Create(PostEntity request)
         {
             try
             {
+                await _postService.AddPost(request);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -44,7 +42,6 @@ namespace EduOMO.Controllers
         }
 
         // GET: PostManagementController/Edit/5
-        [HttpGet("{id}")]
         public async Task<ActionResult> Edit(Guid id)
         {
             var post = await _postService.GetPostById(id);
@@ -84,24 +81,18 @@ namespace EduOMO.Controllers
         }
 
         // GET: PostManagementController/Delete/5
-        public async Task<ActionResult> Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PostManagementController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(Guid id)
         {
             try
             {
+                await _postService.SoftDeletePost(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
             }
+            
         }
     }
 }

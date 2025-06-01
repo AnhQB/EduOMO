@@ -20,12 +20,12 @@ namespace EduOMO.Controllers
         [HttpGet("")]
         public async Task<ActionResult> Index()
         {
-            var posts = await _service.GetAllPosts();
+            var posts = await _service.GetFirst10Posts();
             var result = posts.Select(x => new PostViewModel
             {
                 Slug = x.Slug,
                 Title = x.Title,
-                Content = x.Content,
+                Content = x.Content?.Length > 150 ? x.Content.Substring(0, 250) : x.Content,
                 Keyword = x.Keyword,
                 Document = x.Document,
                 CreatedBy = x.CreatedBy,
@@ -52,6 +52,14 @@ namespace EduOMO.Controllers
                 UpdatedBy = post.UpdatedBy,
                 UpdatedAt = post.UpdatedAt
             };
+
+            var references = await _service.GetFirst5PostsNotCurrent(post.Id);
+            ViewData["PostReferences"] = references.Select(x => new PostViewModel
+            {
+                Slug = x.Slug,
+                Title = x.Title,
+                Document = x.Document
+            });
             return View(result);
         }
     }

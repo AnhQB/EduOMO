@@ -7,6 +7,8 @@
     ViewData["title"] = "";
     ViewData["image"] = "";
     ViewData["description"] = "";
+
+    var postRefs = ViewData["PostReferences"] as IEnumerable<EduOMO.Models.PostViewModel>;
 }
     
 <article class="mb-4">
@@ -15,9 +17,28 @@
             <div class="col-md-10 col-lg-9 col-xl-8">
                 <h1 class="pb-4">@Model.Title</h1>
                 <div class="post-content">
-                    @Model.Content
+                    @Html.Raw(@Model.Content)
                 </div>
             </div>
         </div>
     </div>
 </article>
+<h6>Xem thêm</h6>
+@if (postRefs != null && postRefs.Any())
+{
+    <table class="table">
+        <tbody>
+            @foreach (var item in postRefs)
+            {
+                <tr>
+                    <td>
+                        <a asp-controller="Post" asp-action="Details" asp-route-slug="@item.Slug">@item.Title</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

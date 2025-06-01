@@ -32,7 +32,7 @@
 									<a asp-controller="Post" asp-action="Details" asp-route-slug="@item.Slug">@item.Title</a>
 								</h4>
 								<p class="card-description">
-									@item.Content <a href="#pablo"> Read More </a>
+									@Html.Raw(@item.Content) <a asp-controller="Post" asp-action="Details" asp-route-slug="@item.Slug">Đọc thêm</a>
 								</p>
 								<p class="author">
 									by <a href="#pablo"><b>Mike Butcher</b></a>, 2 days ago
