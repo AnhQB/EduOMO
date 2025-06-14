@@ -17,6 +17,10 @@ namespace EduOMO.Controllers
         public async Task<ActionResult> Index()
         {
             var posts = await _postService.GetAllPosts();
+            foreach (var item in posts)
+            {
+                item.Content = item.Content?.Length > 150 ? item.Content.Substring(0, 250) + "..." : item.Content;
+            }
             return View(posts);
         }
 
