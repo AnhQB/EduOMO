@@ -1,0 +1,46 @@
+﻿@model IEnumerable<EduOMO.Models.QuestionViewModel>
+@{
+	ViewData["Title"] = "Hỏi đáp trên Tailieuhoc247";
+	ViewData["description"] = "";
+	ViewData["keywords"] = "";
+	ViewData["url"] = "";
+	ViewData["title"] = "";
+	ViewData["image"] = "";
+	ViewData["description"] = "";
+}
+<div class="container">
+	<div class="title">
+		<h2 class="title">Hỏi đáp</h2>
+	</div>
+	<div class="items">
+
+		@foreach (var item in Model)
+		{
+			<div class="row">
+				<div class="col-12 col-md-offset-1">
+					<div class="card card-plain card-blog">
+						<div class="row">
+							<div class="d-flex align-items-center">
+								<!-- Avatar -->
+								<div class="me-3">
+									<img src="/ImageSource/Avatar/t.hai912001.png" alt="Avatar" class="rounded-circle" width="45" height="45">
+								</div>
+								<!-- User Info -->
+								<div>
+									<a href="#" class="text-dark text-decoration-none fw-bold d-block">t.hai912001</a>
+									<small class="text-muted">9/5/2024 8:41:49 AM</small>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<p class="text-dark mb-3">
+								<a asp-controller="Question" asp-action="Details" asp-route-slug="@item.Slug">@item.Content</a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+

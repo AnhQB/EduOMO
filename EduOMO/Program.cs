@@ -15,6 +15,7 @@ namespace EduOMO
             builder.Services.AddDbContext<EduOMOContext>(
                 o => o.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IPostService, PostService>();
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
 
             var app = builder.Build();
 

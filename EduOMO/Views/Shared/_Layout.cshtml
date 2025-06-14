@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EduOMO.styles.css" asp-append-version="true" />
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    @await RenderSectionAsync("CssCustom", required: false)
     <!-- Google tag (gtag.js) -->
     <script async="" src=""></script>
 </head>
@@ -37,7 +38,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Bài viết</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Post" asp-action="Index">Hỏi đáp</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Question" asp-action="Index">Hỏi đáp</a>
                         </li>
                     </ul>
                 </div>

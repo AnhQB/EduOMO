@@ -9,3 +9,9 @@ public class PostViewModel : CommonDto
     public string? Keyword { get; set; }
     public string? Document { get; set; }
 }
+
+public class PostWithReferencesViewModel
+{
+    public PostViewModel CurrentPost { get; set; }
+    public List<PostViewModel> References { get; set; }
+}

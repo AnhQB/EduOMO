@@ -10,22 +10,22 @@ namespace EduOMO.Controllers
     [Route("Post")]
     public class PostController : Controller
     {
-        private readonly IPostService _postService;
+        private readonly IPostService _service;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService service)
         {
-            this._postService = postService;
+            this._service = service;
         }
         // GET: PostController
         [HttpGet("")]
         public async Task<ActionResult> Index()
         {
-            var posts = await _postService.GetAllPosts();
+            var posts = await _service.GetFirst10Posts();
             var result = posts.Select(x => new PostViewModel
             {
                 Slug = x.Slug,
                 Title = x.Title,
-                Content = x.Content,
+                Content = x.Content?.Length > 150 ? x.Content.Substring(0, 250) : x.Content,
                 Keyword = x.Keyword,
                 Document = x.Document,
                 CreatedBy = x.CreatedBy,
@@ -40,7 +40,7 @@ namespace EduOMO.Controllers
         [HttpGet("Details/{slug}")]
         public async Task<ActionResult> Details(string slug)
         {
-            var post = await _postService.GetPostBySlug(slug);
+            var post = await _service.GetPostBySlug(slug);
             var result = new PostViewModel
             {
                 Slug = post.Slug,
@@ -52,6 +52,14 @@ namespace EduOMO.Controllers
                 UpdatedBy = post.UpdatedBy,
                 UpdatedAt = post.UpdatedAt
             };
+
+            var references = await _service.GetFirst5PostsNotCurrent(post.Id);
+            ViewData["PostReferences"] = references.Select(x => new PostViewModel
+            {
+                Slug = x.Slug,
+                Title = x.Title,
+                Document = x.Document
+            });
             return View(result);
         }
     }
