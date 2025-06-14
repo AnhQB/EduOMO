@@ -13,8 +13,10 @@ public static class GenerateSlugHelper
         string str = RemoveAccent(phrase).ToLower();
         str = Regex.Replace(str, @"[^a-z0-9\s-]", ""); // loại bỏ các ký tự đặc biệt, chỉ giữ lại các ký tự chữ cái, số, dấu cách và dấu gạch ngang
         str = Regex.Replace(str, @"\s+", " ").Trim(); // loại bỏ các khoảng trắng thừa
-        str = Regex.Replace(str, @"\s", "-"); // thay thế khoảng trắng bằng dấu gạch ngang
-        str += $"-{salt}"; // thêm salt vào cuối slug
+
+        string result = string.Join("-", str.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(24));
+        //str = Regex.Replace(str, @"\s", "-"); // thay thế khoảng trắng bằng dấu gạch ngang
+        result += $"-{salt}"; // thêm salt vào cuối slug
         return str;
     }
     public static string GenerateSalt(int byteLength = 12)
