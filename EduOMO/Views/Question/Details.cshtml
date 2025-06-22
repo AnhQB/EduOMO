@@ -7,14 +7,105 @@
 	ViewData["title"] = "";
 	ViewData["image"] = "";
 	ViewData["description"] = "";
+
+    var quesRefs = ViewData["QuesReferences"] as IEnumerable<EduOMO.Models.QuestionReferenceModel>;
 }
+
+@section CssCustom {
+    <style>
+        .answer-label {
+            display: inline-block;
+            color: #3c763d; /* dark green text */
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+}
+
 <div class="container">
 	<div class="row">
-		<div class="col-9 col-md-offset-1">
-		</div>
-		<div class="col-3 col-md-offset-1">
-			<h4 class="text-dark mb-7">Câu Hỏi Liên Quan</h4>
+		<div class="col-lg-9 col-md-offset-1">
+			<div class="container">
+                <!-- User Info -->
+                <div class="media">
+                    <div class="media-left">
+                        <img class="user-avatar media-object" src="/ImageSource/Avatar/t.hai912001.png" alt="Avatar">
+                    </div>
+                    <div class="media-body">
+                        <p class="username">t.hai912001</p>
+                        <p class="text-muted">9/5/2024 8:41:49 AM</p>
+                    </div>
+                </div>
 
+                <!-- Question -->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        Bạn An làm một số bài toán trong ba ngày, ngày đầu bạn làm được 2/3 tổng số bài, 
+                        ngày thứ hai bạn làm được 20% tổng số bài, ngày thứ ba bạn làm nốt 2 bài.
+                        Hỏi trong ba ngày bạn An làm được bao nhiêu bài toán?
+                    </div>
+                </div>
+
+                <!-- Interaction Buttons -->
+                @* <div class="btn-group">
+                    <button class="btn btn-default">
+                        <span class="glyphicon glyphicon-comment"></span> 2
+                    </button>
+                    <button class="btn btn-default">👎 0</button>
+                </div> *@
+
+                <!-- Show Solution Button -->
+                <button class="btn btn-danger btn-view mt-2" onclick="ViewAswer()">
+                    <i class="glyphicon glyphicon-check"></i> Xem Hướng Dẫn Giải
+                </button>
+
+                <!-- Answer Section -->
+                <div id="solution" style="display:none; margin-top: 20px;">
+                    <label class="answer-label mb-1">Câu Trả Lời:</label>
+                    <div class="media">
+                        <div class="media-left">
+                            <img class="user-avatar media-object" src="/ImageSource/Avatar/thuyphuoc56.png" alt="Avatar">
+                        </div>
+                        <div class="media-body">
+                            <p>Phân số chỉ số bài bạn An làm được trong ngày thứ ba là:</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;1 - (2/3 + 20%) = 2/15</p>
+                            <p>Số bài toán trong ba ngày bạn An làm được là:</p>
+                            <p>&nbsp;&nbsp;&nbsp;&nbsp;2 : (2/15) = 15 (bài)</p>
+                            <p>👉 <strong>Đáp số: 15 bài toán</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
+        @if (quesRefs != null && quesRefs.Any())
+        {
+            <div class="col-lg-3 col-md-offset-1">
+                <h4 class="text-dark mb-7">Câu Hỏi Liên Quan</h4>
+                <table class="table">
+                    <tbody>
+                        @foreach (var item in quesRefs)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Question" asp-action="Details" asp-route-slug="@item.Slug">@item.Content</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 	</div>
 </div>
+@section Scripts {
+    <script>
+        function ViewAswer() {
+            var solutionDiv = document.getElementById('solution');
+            if (solutionDiv.style.display === 'none' || solutionDiv.style.display === '') {
+                solutionDiv.style.display = 'block';
+            } else {
+                solutionDiv.style.display = 'none';
+            }
+        }
+    </script>
+}

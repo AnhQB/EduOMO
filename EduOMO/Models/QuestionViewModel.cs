@@ -9,10 +9,15 @@ public class QuestionViewModel : CommonDto
     public List<AnswerResponseDto>? Answers { get; set; }
 }
 
-public class AnswerResponseDto
+public class AnswerResponseDto : CommonDto
 {
     public string? UserName { get; set; }
     public string? Content { get; set; }
     public string? CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+}
+
+public class QuestionReferenceModel : CommonDto
+{
+    public string? Content { get; set; }
 }
