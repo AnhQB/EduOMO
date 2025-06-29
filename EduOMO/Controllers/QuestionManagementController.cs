@@ -1,14 +1,15 @@
-﻿using EduOMO.Services;
+﻿using EduOMO.Models;
+using EduOMO.Services;
 using Microsoft.AspNetCore.Mvc;
 using MMOEdu.Data;
 
 namespace EduOMO.Controllers
 {
-    public class QuestionMangementController : Controller
+    public class QuestionManagementController : Controller
     {
         private readonly IQuestionService _questionService;
 
-        public QuestionMangementController(IQuestionService questionService)
+        public QuestionManagementController(IQuestionService questionService)
         {
             this._questionService = questionService;
         }
@@ -30,7 +31,7 @@ namespace EduOMO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(QuestionEntity request)
+        public async Task<ActionResult> Create(QuestionRequest request)
         {
             try
             {
@@ -51,25 +52,11 @@ namespace EduOMO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(QuestionEntity request)
+        public async Task<ActionResult> Edit(QuestionRequest request)
         {
             try
             {
-                var question = await _questionService.GetQuestionById(request.Id);
-
-                if (question == null)
-                {
-                    return NotFound();
-                }
-
-                question.Content = request.Content;
-                question.Answers = request.Answers;
-
-                // Optionally update audit fields
-                question.UpdatedAt = DateTimeOffset.UtcNow;
-                question.UpdatedBy = User.Identity?.Name;
-
-                await _questionService.UpdateQuestion(question);
+                await _questionService.UpdateQuestion(request);
                 return RedirectToAction(nameof(Index));
             }
             catch

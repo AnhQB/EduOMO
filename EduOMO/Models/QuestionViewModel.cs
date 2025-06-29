@@ -1,4 +1,5 @@
 ﻿using EduOMO.Data;
+using EduOMO.Data.Base;
 using MMOEdu.Data;
 
 namespace EduOMO.Models;
@@ -20,4 +21,10 @@ public class AnswerResponseDto : CommonDto
 public class QuestionReferenceModel : CommonDto
 {
     public string? Content { get; set; }
+}
+
+public class QuestionRequest : CommonDto
+{
+    public string? Content { get; set; }
+    public List<string> Answers { get; set; } = [];
 }

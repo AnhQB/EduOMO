@@ -1,0 +1,92 @@
+﻿@model MMOEdu.Data.QuestionEntity
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+@section CssCustom {
+    <style>
+        #editor1 + .ck-editor .ck-editor__editable_inline {
+            height: 300px !important;
+            overflow-y: auto !important;
+        }
+        #editor2 + .ck-editor .ck-editor__editable_inline,
+        #editor3 + .ck-editor .ck-editor__editable_inline {
+            height: 150px !important;
+            overflow-y: auto !important;
+        }
+    </style>
+}
+
+<h1>Create</h1>
+
+<h4>QuestionEntity</h4>
+<hr />
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea id="editor1" name="Content" class="form-control editor" rows="50"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answers[0]" class="control-label">Answer 1*</label>
+                <textarea id="editor2" name="Answers[0]" class="form-control editor" rows="50"></textarea>
+                <span asp-validation-for="Answers[0]" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Answers[1]" class="control-label">Answer 2</label>
+                <textarea id="editor3" name="Answers[1]" class="form-control editor" rows="50"></textarea>
+                <span asp-validation-for="Answers[1]" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* <script src="~/lib/ckeditor5/ckeditor.js" asp-append-version="true"></script> *@
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        document.querySelectorAll('.editor').forEach((editorEl, index) => {
+                ClassicEditor
+                    .create(editorEl, {
+                        toolbar: {
+                            items: [
+                                'heading', '|',
+                                'bold', 'italic', '|',
+                                'link', 'bulletedList', 'numberedList', '|',
+                                'blockQuote', 'insertTable', 'undo', 'redo'
+                            ]
+                        },
+                        language: 'en',
+                        image: {
+                            toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side']
+                        },
+                        table: {
+                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells']
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        // Sync data back to textareas before submit
+        document.querySelector('form').addEventListener('submit', function () {
+            editors.forEach(({ editor, element }) => {
+                element.value = editor.getData();
+            });
+        });
+    </script>
+}

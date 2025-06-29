@@ -1,6 +1,8 @@
 ﻿using EduOMO.Base;
 using EduOMO.Data.Base;
+using EduOMO.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using MMOEdu.Data;
 
 namespace EduOMO.Services;
@@ -38,11 +40,28 @@ public class QuestionService : IQuestionService
         return await _context.Question.FirstOrDefaultAsync(p => p.Slug == slug && !p.IsDeleted) ?? new QuestionEntity();
     }
 
-    public async Task AddQuestion(QuestionEntity question)
+    public async Task AddQuestion(QuestionRequest question)
     {
+        var entity = new QuestionEntity();
         var slug = GenerateSlugHelper.GenerateSlug(question.Content);
-        question.Slug = slug;
-        _context.Question.Add(question);
+
+        entity.Content = question.Content;
+        entity.Slug = slug;
+        foreach(var item in question.Answers)
+        {
+            var ans = new AnswerEntity
+            {
+                Content = item,
+                UserName = "abc"
+            };
+            entity.Answers.Add(ans);
+        }
+
+        // Optionally update audit fields
+        entity.UpdatedAt = DateTimeOffset.UtcNow;
+        entity.UpdatedBy = "System";
+
+        _context.Question.Add(entity);
         await _context.SaveChangesAsync();
     }
     public async Task SoftDeleteQuestion(Guid id)
@@ -54,9 +73,32 @@ public class QuestionService : IQuestionService
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateQuestion(QuestionEntity question)
+    public async Task<bool> UpdateQuestion(QuestionRequest request)
     {
-        _context.Question.Update(question);
-        await _context.SaveChangesAsync();
+        var entity = await _context.Question.FindAsync(request.Id);
+
+        if (entity == null)
+        {
+            return false;
+        }
+
+        entity.Content = request.Content;
+        foreach (var item in request.Answers)
+        {
+            var ans = new AnswerEntity
+            {
+                Content = item,
+                UserName = "abc"
+            };
+            entity.Answers.Add(ans);
+        }
+
+        // Optionally update audit fields
+        entity.UpdatedAt = DateTimeOffset.UtcNow;
+        entity.UpdatedBy = "System";
+
+        _context.Question.Update(entity);
+        var result = await _context.SaveChangesAsync();
+        return result != 0;
     }
 }
