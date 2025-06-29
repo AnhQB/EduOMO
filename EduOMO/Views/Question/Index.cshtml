@@ -34,7 +34,7 @@
 						</div>
 						<div class="row">
 							<p class="text-dark mb-3">
-								<a asp-controller="Question" asp-action="Details" asp-route-slug="@item.Slug">@item.Content</a>
+								<a asp-controller="Question" asp-action="Details" asp-route-slug="@item.Slug">@Html.Raw(item.Content)</a>
 							</p>
 						</div>
 					</div>

@@ -34,9 +34,6 @@
                     <td>
                         <a asp-controller="Post" asp-action="Details" asp-route-slug="@item.Slug">@item.Title</a>
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Content)
-                    </td>
                 </tr>
             }
         </tbody>

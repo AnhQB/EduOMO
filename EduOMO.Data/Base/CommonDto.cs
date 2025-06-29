@@ -2,6 +2,7 @@
 
 public abstract class CommonDto
 {
+    public Guid Id { get; set; }
     public string? Slug { get; set; }
     public string? CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; }

@@ -1,20 +1,108 @@
 ﻿@model EduOMO.Models.QuestionViewModel
 @{
-	ViewData["Title"] = "Hỏi đáp trên Tailieuhoc247";
-	ViewData["description"] = "";
+    ViewData["Title"] = @Html.Raw(@Model.Content);
+    ViewData["description"] = @Html.Raw(@Model.Content);
 	ViewData["keywords"] = "";
 	ViewData["url"] = "";
-	ViewData["title"] = "";
+    ViewData["title"] = @Html.Raw(@Model.Content);
 	ViewData["image"] = "";
-	ViewData["description"] = "";
+    ViewData["description"] = @Html.Raw(@Model.Content);
+
+    var quesRefs = ViewData["QuesReferences"] as IEnumerable<EduOMO.Models.QuestionReferenceModel>;
 }
+
+@section CssCustom {
+    <style>
+        .answer-label {
+            display: inline-block;
+            color: #3c763d; /* dark green text */
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+}
+
 <div class="container">
 	<div class="row">
-		<div class="col-9 col-md-offset-1">
-		</div>
-		<div class="col-3 col-md-offset-1">
-			<h4 class="text-dark mb-7">Câu Hỏi Liên Quan</h4>
+		<div class="col-lg-9 col-md-offset-1">
+			<div class="container">
+                <!-- User Info -->
+                <div class="media">
+                    <div class="media-left">
+                        <img class="user-avatar media-object" src="/ImageSource/Avatar/t.hai912001.png" alt="Avatar">
+                    </div>
+                    <div class="media-body">
+                        <p class="username">t.hai912001</p>
+                        <p class="text-muted">9/5/2024 8:41:49 AM</p>
+                    </div>
+                </div>
 
+                <!-- Question -->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        @Html.Raw(@Model.Content)
+                    </div>
+                </div>
+
+                <!-- Interaction Buttons -->
+                @* <div class="btn-group">
+                    <button class="btn btn-default">
+                        <span class="glyphicon glyphicon-comment"></span> 2
+                    </button>
+                    <button class="btn btn-default">👎 0</button>
+                </div> *@
+
+                <!-- Show Solution Button -->
+                <button class="btn btn-danger btn-view mt-2" onclick="ViewAswer()">
+                    <i class="glyphicon glyphicon-check"></i> Xem Hướng Dẫn Giải
+                </button>
+
+                <!-- Answer Section -->
+                <div id="solution" style="display:none; margin-top: 20px;">
+                    <label class="answer-label mb-1">Câu Trả Lời:</label>
+                    <div class="media">
+                        @foreach (var item in Model.Answers)
+                        {
+                            <div class="media-left">
+                                <img class="user-avatar media-object" src="/ImageSource/Avatar/thuyphuoc56.png" alt="Avatar">
+                            </div>
+                            <div class="media-body">
+                                @Html.Raw(@item.Content)
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
 		</div>
+        @if (quesRefs != null && quesRefs.Any())
+        {
+            <div class="col-lg-3 col-md-offset-1">
+                <h4 class="text-dark mb-7">Câu Hỏi Liên Quan</h4>
+                <table class="table">
+                    <tbody>
+                        @foreach (var item in quesRefs)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Question" asp-action="Details" asp-route-slug="@item.Slug">@item.Content</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 	</div>
 </div>
+@section Scripts {
+    <script>
+        function ViewAswer() {
+            var solutionDiv = document.getElementById('solution');
+            if (solutionDiv.style.display === 'none' || solutionDiv.style.display === '') {
+                solutionDiv.style.display = 'block';
+            } else {
+                solutionDiv.style.display = 'none';
+            }
+        }
+    </script>
+}

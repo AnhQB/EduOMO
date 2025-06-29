@@ -3,6 +3,7 @@ using EduOMO.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace EduOMO.Controllers
 {
@@ -51,6 +52,13 @@ namespace EduOMO.Controllers
                     CreatedAt = y.CreatedAt,
                 }).ToList() ?? new List<AnswerResponseDto>(),
             };
+
+            var references = await _service.GetFirst5QuestionsNotCurrent(question.Id);
+            ViewData["QuesReferences"] = references.Select(x => new QuestionReferenceModel
+            {
+                Slug = x.Slug,
+                Content = x.Content?.Length > 150 ? x.Content.Substring(0, 100) : x.Content,
+            });
             return View(result);
         }
     }
