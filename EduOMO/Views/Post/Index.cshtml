@@ -8,6 +8,7 @@
     ViewData["image"] = "";
     ViewData["description"] = "";
 }
+
 <div class="container">
 	<div class="title">
 		<h2 class="title">Latest Blogposts</h2>
@@ -20,9 +21,9 @@
 				<div class="col-12 col-md-offset-1">
 					<div class="card card-plain card-blog">
 						<div class="row">
-							<div class="col-md-3">
+							<div class="col-md-3 d-flex align-items-center justify-content-center">
 								<div class="card-image">
-									<img class="img img-raised" src="assets/img/examples/card-blog4.jpg">
+									<img class="img img-raised avatar-img" src="https://avatar.iran.liara.run/username?username=@item.CreatedBy" />
 									<div class="colored-shadow" style="background-image: url(&quot;assets/img/examples/card-blog4.jpg&quot;); opacity: 1;"></div>
 								</div>
 							</div>
@@ -35,7 +36,7 @@
 									@Html.Raw(@item.Content) <a asp-controller="Post" asp-action="Details" asp-route-slug="@item.Slug">Đọc thêm</a>
 								</p>
 								<p class="author">
-									by <a href="#pablo"><b>Mike Butcher</b></a>, 2 days ago
+									by <a href="#pablo"><b>@(item.CreatedBy?.Replace("+", " ") ?? "Hệ thống")</b></a>
 								</p>
 							</div>
 						</div>

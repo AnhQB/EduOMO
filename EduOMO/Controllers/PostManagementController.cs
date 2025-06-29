@@ -1,4 +1,5 @@
-﻿using EduOMO.Services;
+﻿using EduOMO.Base;
+using EduOMO.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +74,7 @@ namespace EduOMO.Controllers
 
                 // Optionally update audit fields
                 post.UpdatedAt = DateTimeOffset.UtcNow;
-                post.UpdatedBy = User.Identity?.Name;
+                post.UpdatedBy = "Sytem(auto)";
 
                 await _postService.UpdatePost(post);
                 return RedirectToAction(nameof(Index));

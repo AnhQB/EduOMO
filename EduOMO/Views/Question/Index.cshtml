@@ -23,12 +23,12 @@
 							<div class="d-flex align-items-center">
 								<!-- Avatar -->
 								<div class="me-3">
-									<img src="/ImageSource/Avatar/t.hai912001.png" alt="Avatar" class="rounded-circle" width="45" height="45">
+									<img class="rounded-circle avatar-img" alt="Avatar" width="45" height="45" src="https://avatar.iran.liara.run/username?username=@item.CreatedBy" />
 								</div>
 								<!-- User Info -->
 								<div>
-									<a href="#" class="text-dark text-decoration-none fw-bold d-block">t.hai912001</a>
-									<small class="text-muted">9/5/2024 8:41:49 AM</small>
+									<a href="#" class="text-dark text-decoration-none fw-bold d-block">@item.CreatedBy?.Replace("+", " ")</a>
+									<small class="text-muted">@item.CreatedAt</small>
 								</div>
 							</div>
 						</div>

@@ -27,3 +27,13 @@ body {
 .items{
     padding: 50px 0;
 }
+
+.avatar-img {
+    width: 100px; /* Adjust size */
+    height: 100px;
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures it fills the circle */
+    border: 2px solid #ddd; /* Optional border */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional shadow */
+    margin-bottom: 10px;
+}

@@ -52,14 +52,14 @@ public class QuestionService : IQuestionService
             var ans = new AnswerEntity
             {
                 Content = item,
-                UserName = "abc"
+                UserName = GenerateDisplayUserNameHelper.GenerateOneUsername()
             };
             entity.Answers.Add(ans);
         }
 
         // Optionally update audit fields
-        entity.UpdatedAt = DateTimeOffset.UtcNow;
-        entity.UpdatedBy = "System";
+        entity.CreatedAt = DateTimeOffset.UtcNow;
+        entity.CreatedBy = GenerateDisplayUserNameHelper.GenerateOneUsername();
 
         _context.Question.Add(entity);
         await _context.SaveChangesAsync();
@@ -83,6 +83,7 @@ public class QuestionService : IQuestionService
         }
 
         entity.Content = request.Content;
+        request.Answers = [];
         foreach (var item in request.Answers)
         {
             var ans = new AnswerEntity
@@ -95,7 +96,7 @@ public class QuestionService : IQuestionService
 
         // Optionally update audit fields
         entity.UpdatedAt = DateTimeOffset.UtcNow;
-        entity.UpdatedBy = "System";
+        entity.UpdatedBy = "System(auto)";
 
         _context.Question.Update(entity);
         var result = await _context.SaveChangesAsync();

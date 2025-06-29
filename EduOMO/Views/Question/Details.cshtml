@@ -29,11 +29,11 @@
                 <!-- User Info -->
                 <div class="media">
                     <div class="media-left">
-                        <img class="user-avatar media-object" src="/ImageSource/Avatar/t.hai912001.png" alt="Avatar">
+                        <img class="rounded-circle avatar-img" alt="Avatar" width="45" height="45" src="https://avatar.iran.liara.run/username?username=@Model.CreatedBy" />
                     </div>
                     <div class="media-body">
-                        <p class="username">t.hai912001</p>
-                        <p class="text-muted">9/5/2024 8:41:49 AM</p>
+                        <p class="username">@Model.CreatedBy.Replace("+", " ")</p>
+                        <p class="text-muted">@Model.CreatedAt</p>
                     </div>
                 </div>
 
@@ -64,7 +64,8 @@
                         @foreach (var item in Model.Answers)
                         {
                             <div class="media-left">
-                                <img class="user-avatar media-object" src="/ImageSource/Avatar/thuyphuoc56.png" alt="Avatar">
+                                <img class="user-avatar media-object" width="30" height="30" src="https://avatar.iran.liara.run/username?username=@item.UserName" alt="Avatar">
+                                <span class="username">@item.UserName.Replace("+", " ")</span>
                             </div>
                             <div class="media-body">
                                 @Html.Raw(@item.Content)
