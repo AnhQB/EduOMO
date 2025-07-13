@@ -1,12 +1,12 @@
 ﻿@model EduOMO.Models.PostViewModel
 @{
-    ViewData["Title"] = "Bài viết trên Tailieuhoc247";
-    ViewData["description"] = "";
-    ViewData["keywords"] = "";
+    ViewData["Title"] = @Model.Title ?? string.Empty;
+    ViewData["description"] = @Model.DescriptionOG ?? string.Empty;
+    ViewData["keywords"] = @Model.Keyword ?? string.Empty;
     ViewData["url"] = "";
-    ViewData["title"] = "";
+    ViewData["title"] = @Model.Title ?? string.Empty;
     ViewData["image"] = "";
-    ViewData["description"] = "";
+    ViewData["description"] = @Model.DescriptionOG ?? string.Empty;
 
     var postRefs = ViewData["PostReferences"] as IEnumerable<EduOMO.Models.PostViewModel>;
 }

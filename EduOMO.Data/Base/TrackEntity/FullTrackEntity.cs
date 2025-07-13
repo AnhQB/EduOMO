@@ -4,6 +4,7 @@ public abstract class FullTrackEntity : IEntity<Guid>, IDeleteTrackEntity, ICrea
 {
     public Guid Id { get; set; }
     public string? Slug { get; set; }
+    public string? DescriptionOG { get; set; }
     public string? CreatedBy { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public string? UpdatedBy { get; set; }

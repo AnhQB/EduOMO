@@ -71,6 +71,7 @@ namespace EduOMO.Controllers
                 post.Content = request.Content;
                 post.Keyword = request.Keyword;
                 post.Document = request.Document;
+                post.DescriptionOG = request.Content!.StripHtmlTags();
 
                 // Optionally update audit fields
                 post.UpdatedAt = DateTimeOffset.UtcNow;

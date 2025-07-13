@@ -45,6 +45,7 @@ public class PostService : IPostService
         post.Slug = slug;
         post.CreatedAt = DateTimeOffset.UtcNow;
         post.CreatedBy = GenerateDisplayUserNameHelper.GenerateOneUsername();
+        post.DescriptionOG = post.Content!.StripHtmlTags();
         _context.Post.Add(post);
         await _context.SaveChangesAsync();
     }

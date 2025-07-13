@@ -50,7 +50,8 @@ namespace EduOMO.Controllers
                 CreatedBy = post.CreatedBy,
                 CreatedAt = post.CreatedAt,
                 UpdatedBy = post.UpdatedBy,
-                UpdatedAt = post.UpdatedAt
+                UpdatedAt = post.UpdatedAt,
+                DescriptionOG = post.DescriptionOG
             };
 
             var references = await _service.GetFirst5PostsNotCurrent(post.Id);

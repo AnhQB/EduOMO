@@ -47,7 +47,8 @@ public class QuestionService : IQuestionService
 
         entity.Content = question.Content;
         entity.Slug = slug;
-        foreach(var item in question.Answers)
+        entity.DescriptionOG = question.Content.StripHtmlTags();
+        foreach (var item in question.Answers)
         {
             var ans = new AnswerEntity
             {
@@ -83,6 +84,7 @@ public class QuestionService : IQuestionService
         }
 
         entity.Content = request.Content;
+        entity.DescriptionOG = request.Content!.StripHtmlTags();
         request.Answers = [];
         foreach (var item in request.Answers)
         {

@@ -1,12 +1,12 @@
 ﻿@model EduOMO.Models.QuestionViewModel
 @{
-    ViewData["Title"] = @Html.Raw(@Model.Content);
-    ViewData["description"] = @Html.Raw(@Model.Content);
-	ViewData["keywords"] = "";
+    ViewData["Title"] = @Model.DescriptionOG ?? string.Empty;
+    ViewData["description"] = @Model.DescriptionOG ?? string.Empty;
+    ViewData["keywords"] = @Model.DescriptionOG ?? string.Empty;
 	ViewData["url"] = "";
-    ViewData["title"] = @Html.Raw(@Model.Content);
+    ViewData["title"] = @Model.DescriptionOG ?? string.Empty;
 	ViewData["image"] = "";
-    ViewData["description"] = @Html.Raw(@Model.Content);
+    ViewData["description"] = @Model.DescriptionOG ?? string.Empty;
 
     var quesRefs = ViewData["QuesReferences"] as IEnumerable<EduOMO.Models.QuestionReferenceModel>;
 }

@@ -44,6 +44,7 @@ namespace EduOMO.Controllers
                 CreatedAt = question.CreatedAt,
                 UpdatedBy = question.UpdatedBy,
                 UpdatedAt = question.UpdatedAt,
+                DescriptionOG = question.DescriptionOG,
                 Answers = question.Answers?.Select(y => new AnswerResponseDto
                 {
                     UserName = y.UserName,
