@@ -43,11 +43,12 @@ public class QuestionService : IQuestionService
     public async Task AddQuestion(QuestionRequest question)
     {
         var entity = new QuestionEntity();
-        var slug = GenerateSlugHelper.GenerateSlug(question.Content);
+        entity.DescriptionOG = question.Content!.StripHtmlTags();
+        var slug = GenerateSlugHelper.GenerateSlug(entity.DescriptionOG);
 
         entity.Content = question.Content;
         entity.Slug = slug;
-        entity.DescriptionOG = question.Content.StripHtmlTags();
+        
         foreach (var item in question.Answers)
         {
             var ans = new AnswerEntity
@@ -85,13 +86,15 @@ public class QuestionService : IQuestionService
 
         entity.Content = request.Content;
         entity.DescriptionOG = request.Content!.StripHtmlTags();
+        var slug = GenerateSlugHelper.GenerateSlug(entity.DescriptionOG);
+        entity.Slug = slug;
         request.Answers = [];
         foreach (var item in request.Answers)
         {
             var ans = new AnswerEntity
             {
                 Content = item,
-                UserName = "abc"
+                UserName = GenerateDisplayUserNameHelper.GenerateOneUsername()
             };
             entity.Answers.Add(ans);
         }
