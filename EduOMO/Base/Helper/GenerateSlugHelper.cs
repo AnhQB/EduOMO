@@ -17,7 +17,7 @@ public static class GenerateSlugHelper
         string result = string.Join("-", str.Split(' ', StringSplitOptions.RemoveEmptyEntries).Take(24));
         //str = Regex.Replace(str, @"\s", "-"); // thay thế khoảng trắng bằng dấu gạch ngang
         result += $"-{salt}"; // thêm salt vào cuối slug
-        return str;
+        return result;
     }
     public static string GenerateSalt(int byteLength = 12)
     {

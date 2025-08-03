@@ -12,4 +12,6 @@ public interface IPostService
     Task AddPost(PostEntity post);
     Task UpdatePost(PostEntity post);
     Task SoftDeletePost(Guid id);
+    Task<int> CountPosts ();
+    Task<IEnumerable<PostEntity>> GetAllPosts(int pageIndex, int pageSize = 5000);
 }

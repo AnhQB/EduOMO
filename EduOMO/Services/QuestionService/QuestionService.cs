@@ -107,4 +107,14 @@ public class QuestionService : IQuestionService
         var result = await _context.SaveChangesAsync();
         return result != 0;
     }
+
+    public async Task<int> CountQuestions()
+    {
+        return await _context.Question.CountAsync(_ => !_.IsDeleted);
+    }
+
+    public async Task<IEnumerable<QuestionEntity>> GetAllQuestions(int pageIndex, int pageSize = 5000)
+    {
+        return await _context.Question.AsNoTracking().OrderBy(x => x.CreatedAt).ThenBy(p => p.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
 }

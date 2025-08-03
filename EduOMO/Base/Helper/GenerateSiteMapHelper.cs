@@ -1,14 +1,17 @@
-﻿using System.Xml;
+﻿using EduOMO.Base.Dto;
+using EduOMO.Data.Base;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace EduOMO.Base;
 
 public static class GenerateSiteMapHelper
 {
-    public static XmlDocument GetSiteMap(List<string> MyList)
+    public static string POSTNAVIGATION = "post"; 
+    public static string QUESTIONNAVIGATION = "question"; 
+    public static string GetSiteMap(List<SitemapIndexNode> MyList)
     {
-        String MyHome = "http://www.mysite.com/sitemap";//Create Absolute url start.
-
         XmlDocument doc = new XmlDocument();// create XML Documents
         XmlDeclaration dec = doc.CreateXmlDeclaration("1.0", null, null);// Create the head element
         doc.AppendChild(dec);
@@ -24,8 +27,8 @@ public static class GenerateSiteMapHelper
             XmlElement Loc = doc.CreateElement("loc");
             XmlElement Mod = doc.CreateElement("lastmod");
 
-            Loc.InnerText = MyHome + "/" + item;
-            Mod.InnerText = "2025-05-05T06:05:36+07:00";
+            Loc.InnerText = item.Loc;
+            Mod.InnerText = item.LastMod.ToString("yyyy-MM-ddTHH:mm:ss+00:00");
 
             MySiteMap.AppendChild(Loc);
             MySiteMap.AppendChild(Mod);
@@ -34,16 +37,15 @@ public static class GenerateSiteMapHelper
             root.AppendChild(MySiteMap);
         }
 
-        return doc;
+        return doc.OuterXml;
     }
 
-    public static XmlDocument GetSiteMapRoot()
+    public static string GetSiteMapRoot(string request)
     {
-        String MyHome = "http://www.mysite.com";
         List<string> MyList = new List<string>
         {
-            string.Concat(MyHome, "/post"),
-            string.Concat(MyHome, "/question"),
+            string.Concat(request, "/", POSTNAVIGATION),
+            string.Concat(request, "/", QUESTIONNAVIGATION),
         };
 
         XmlDocument doc = new XmlDocument();
@@ -63,7 +65,7 @@ public static class GenerateSiteMapHelper
         XmlElement Freq1 = doc.CreateElement("changefreq");
         XmlElement Pri1 = doc.CreateElement("priority");
 
-        Loc1.InnerText = MyHome;
+        Loc1.InnerText = request;
         Freq1.InnerText = "hourly";
         Pri1.InnerText = "1.0";
 
@@ -82,7 +84,7 @@ public static class GenerateSiteMapHelper
             XmlElement Freq = doc.CreateElement("changefreq");
             XmlElement Pri = doc.CreateElement("priority");
 
-            Loc.InnerText = MyHome + "/" + item;
+            Loc.InnerText = item;
             Freq.InnerText = "daily";
             Pri.InnerText = "0.85";
 
@@ -94,17 +96,16 @@ public static class GenerateSiteMapHelper
             root.AppendChild(MyUrl);
         }
 
-        return doc;
+        return doc.OuterXml;
     }
 
-    public static XmlDocument GetSiteMapElement(List<string> MyList)
+    public static string GetSiteMapElement<T>(string request, IEnumerable<T> MyList) where T : FullTrackEntity
     {
         /// Add namespace:
         ///using System.Xml;
         ///using System.Data;
         ///using System.Xml.Serialization;
 
-        String MyHome = "http://www.mysite.com";//Create Absolute url start.
 
         // create DataSet and DataTable if needed, or use List Array only
         /*
@@ -127,20 +128,23 @@ public static class GenerateSiteMapHelper
         doc.AppendChild(root);
 
         //foreach (DataRow DR in DT.Rows)// if use DataTable or
-        foreach (var array in MyList)// if use List only
+        foreach (var obj in MyList)// if use List only
         {
             XmlElement MyUrl = doc.CreateElement("url");//create child node for root node
 
             XmlElement Loc = doc.CreateElement("loc");//create child node for MyUrl node
+            XmlElement LastMod = doc.CreateElement("lastmod");//create child node for MyUrl node
             XmlElement Freq = doc.CreateElement("changefreq");//create child node for MyUrl node
             XmlElement Pri = doc.CreateElement("priority");//create child node for MyUrl node
                                                            // create them element for <lastmod>2023-07-26</lastmod>
 
-            Loc.InnerText = MyHome + "/" + array;//set value for 1. child node  Loc node
+            Loc.InnerText = request + "/" + obj.Slug;//set value for 1. child node  Loc node
+            LastMod.InnerText = obj.UpdatedAt.ToString("yyyy-MM-ddTHH:mm:ss+00:00"); ;//set value for 1. child node-Freq node
             Freq.InnerText = "hourly";//set value for 1. child node-Freq node
             Pri.InnerText = "0.85";//set value for 1. child node-Pri node
 
             MyUrl.AppendChild(Loc); //add child Loc node to MyUrl node
+            MyUrl.AppendChild(LastMod); //add child Loc node to MyUrl node
             MyUrl.AppendChild(Freq);//add child Freq node to MyUrl node
             MyUrl.AppendChild(Pri);//add child Pri node to MyUrl node
 
@@ -148,7 +152,7 @@ public static class GenerateSiteMapHelper
             root.AppendChild(MyUrl);//add child MyUrl node to root node
         }
 
-        return doc;
+        return doc.OuterXml;
         //Response.Clear();
         //XmlSerializer xs = new XmlSerializer(typeof(XmlDocument));
         //Response.ContentType = "text/xml";

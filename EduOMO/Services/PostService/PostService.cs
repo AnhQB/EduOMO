@@ -65,4 +65,13 @@ public class PostService : IPostService
         await _context.SaveChangesAsync();
     }
 
+    public async Task<int> CountPosts()
+    {
+        return await _context.Post.CountAsync(x => !x.IsDeleted);
+    }
+
+    public async Task<IEnumerable<PostEntity>> GetAllPosts(int pageIndex, int pageSize = 5000)
+    {
+        return await _context.Post.AsNoTracking().OrderBy(x => x.CreatedAt).ThenBy(p => p.Id).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
 }

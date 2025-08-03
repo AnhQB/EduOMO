@@ -13,4 +13,6 @@ public interface IQuestionService
     Task AddQuestion(QuestionRequest question);
     Task<bool> UpdateQuestion(QuestionRequest question);
     Task SoftDeleteQuestion(Guid id);
+    Task<int> CountQuestions();
+    Task<IEnumerable<QuestionEntity>> GetAllQuestions(int pageIndex, int pageSize = 5000);
 }
